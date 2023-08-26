@@ -2,40 +2,38 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v4.0.3
-      with:
-        major_pattern: "major:"
-        minor_pattern: "feat:"
-        format: "${major}.${minor}.${patch}-prerelease${increment}"
-      id: version
+      - name: Git Semantic Version
+        uses: PaulHatch/semantic-version@v4.0.3
+        with:
+          major_pattern: 'major:'
+          minor_pattern: 'feat:'
+          format: '${major}.${minor}.${patch}-prerelease${increment}'
+        id: version
 
-    - name: Docker login
-      env: 
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-      run: |        
-        docker login -u $DOCKER_USER -p $DOCKER_PASS
-        echo "New Semantic version $NEW_VERSION!!!!!!!!!!!!!!!!!!!!!!!"
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-    # - name: Docker build image
-    #   run: |
-    #     docker build -t mundoenrique/docker-graphql:0.0.2 --push .      
-    #     docker build -t mundoenrique/docker-graphql:latest --push .      
+      - name: Docker build image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t mundoenrique/docker-graphql:NEW_VERSION --push .
+          docker build -t mundoenrique/docker-graphql:latest --push .
