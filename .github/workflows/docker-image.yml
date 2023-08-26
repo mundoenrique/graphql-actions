@@ -32,7 +32,8 @@ jobs:
 
       - name: Docker build image
         env:
-          NEW_VERSION: ${{ steps.version.out }}
+          NEW_VERSION: ${{ steps.version.out.version }}
         run: |
+          echo ${{ steps.version.out }}
           docker build -t mundoenrique/docker-graphql:$NEW_VERSION --push .
           docker build -t mundoenrique/docker-graphql:latest --push .
