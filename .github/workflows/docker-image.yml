@@ -35,5 +35,5 @@ jobs:
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker build -t mundoenrique/docker-graphql:NEW_VERSION --push .
+          docker build -t mundoenrique/docker-graphql:$NEW_VERSION --push .
           docker build -t mundoenrique/docker-graphql:latest --push .
