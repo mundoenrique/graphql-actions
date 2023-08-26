@@ -27,11 +27,12 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-          NEW_VERSION: ${{ steps.version.out }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
 
       - name: Docker build image
+        env:
+          NEW_VERSION: ${{ steps.version.out }}
         run: |
-          docker build -t mundoenrique/docker-graphql:0.0.2 --push .
+          docker build -t mundoenrique/docker-graphql:$NEW_VERSION --push .
           docker build -t mundoenrique/docker-graphql:latest --push .
