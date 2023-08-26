@@ -23,7 +23,7 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       run: |
         echo "init login"
-        docker login -u $DOCKER_USER -p DOCKER_PASS
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
         echo "end login"
 
         
